@@ -32,8 +32,8 @@ The bin packing algorithm takes an array of bins with specified sizes and an arr
 
 2. Call the `binPackAlgo` function with the data arrays.
 
+### Test Case For Best-Fit
 ```
-// Large dataset for testing
 $binData = [
     ['binSize' => 10, 'name' => 'A'],
     ['binSize' => 20, 'name' => 'B'],
