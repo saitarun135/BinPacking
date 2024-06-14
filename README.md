@@ -4,7 +4,7 @@ This repository contains a PHP implementation of the bin packing algorithm using
 
 ## Description
 
-The bin packing algorithm takes an array of bins with specified sizes and an array of items with sizes to fit into these bins. The algorithm sorts the items in descending order and places each item into the most suitable bin based on the remaining space.
+The bin packing algorithm takes an array of bins with specified sizes and an array of items with sizes to fit into these bins. The algorithm sorts the items in descending order and places each item into the most suitable bin based on the remaining space.binData and itemsToFit arrays can accept extra keys too other than mentioned below test suit .
 
 ## Usage
 
