@@ -113,5 +113,5 @@ $itemsToFit = [
 
 ```
 
-![Bin Packing Algorithm](https://personal.morris.umn.edu/~mcquarrb/teachingarchive/M1001/Resources/figBinNF.jpg)
+ ![Bin Packing Algorithm](https://personal.morris.umn.edu/~mcquarrb/teachingarchive/M1001/Resources/figBinNF.jpg)
 
