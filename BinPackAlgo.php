@@ -36,7 +36,8 @@ function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
             $bin['fitData'] = $fitItems;
         }
         $binData['unFitPieces'] = $itemsToFit;
-        print_r($binData);
+        
+        return $binData;
     }
 }
 
