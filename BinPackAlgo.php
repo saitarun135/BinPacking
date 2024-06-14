@@ -14,11 +14,7 @@ function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
 {
     if($algoType == 'best_fit')
     {
-        /** sorting for best fit */
-        usort($itemsToFit,function($a,$b){
-            return $b['size'] <=> $a['size'];
-        });
-
+        $itemsToFit = fitsSequenceForBetterFit($itemsToFit);
         foreach($binData as &$bin)
         {
             $fitItems = [];
@@ -42,6 +38,15 @@ function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
         $binData['unFitPieces'] = $itemsToFit;
         print_r($binData);
     }
+}
+
+function fitsSequenceForBetterFit($itemsToFit)
+{
+     /** sorting for best fit */
+     usort($itemsToFit,function($a,$b){
+        return $b['size'] <=> $a['size'];
+    });
+    return $itemsToFit;
 }
 
 // Large dataset for testing
