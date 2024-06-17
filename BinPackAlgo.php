@@ -50,7 +50,4 @@ function fitsSequenceForBetterFit($itemsToFit)
     return $itemsToFit;
 }
 
-
-
-binPackAlgo($binData , $itemsToFit);
 ?>
