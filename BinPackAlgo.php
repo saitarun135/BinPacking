@@ -19,10 +19,14 @@ function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
         {
             $fitItems = [];
             $remaining_bin_space = $bin['binSize'];
+            $position = 0;
             foreach($itemsToFit as $key =>  $fitPiece)
             {
                 if($fitPiece['size'] <= $remaining_bin_space)
                 {
+                    $fitPiece['head'] = $position;
+                    $fitPiece['tail'] = $fitPiece['size'];
+                    $position = $fitPiece['size'];
                     $fitItems[] = $fitPiece; 
                     unset($itemsToFit[$key]);
                     $remaining_bin_space -= $fitPiece['size'];
@@ -36,7 +40,7 @@ function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
             $bin['fitData'] = $fitItems;
         }
         $binData['unFitPieces'] = $itemsToFit;
-        
+        print_r($binData);
         return $binData;
     }
 }
@@ -50,4 +54,7 @@ function fitsSequenceForBetterFit($itemsToFit)
     return $itemsToFit;
 }
 
+$binData = [['binSize' => 10 ,'name' => 'A']];
+$itemsToFit = [['size'=>8], ['size' => 1.5], ['size' => 9], ['size' => 3], ['size'=> 1] ]; 
+binPackAlgo($binData,$itemsToFit);
 ?>
