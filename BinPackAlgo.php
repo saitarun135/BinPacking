@@ -1,6 +1,7 @@
 <?php
 
 const BEST_FIT = 'best_fit';
+const CLEAR_HOUSE = 'clear_house';
 /*
 |--------------------------------------------------------------------------
 | Bin Packing Algo
@@ -12,7 +13,7 @@ const BEST_FIT = 'best_fit';
     
 function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
 {
-    if($algoType == 'best_fit')
+    if($algoType == BEST_FIT)
     {
         $itemsToFit = fitsSequenceForBetterFit($itemsToFit);
         foreach($binData as &$bin)
@@ -43,6 +44,40 @@ function binPackAlgo($binData, $itemsToFit, $algoType = BEST_FIT)
         print_r($binData);
         return $binData;
     }
+    elseif($algoType == CLEAR_HOUSE)
+    {
+        foreach ($binData as $bin) {
+            $binSize = $bin['binSize'];
+            $possibleFits = fitsSequenceForPossibleScenarios($itemsToFit, $binSize);
+            $allCombinations = getAllValidCombinations($possibleFits, $binSize);
+    
+            echo "Bin: " . $bin['name'] . "\n";
+            echo "Possible item combinations:\n";
+            foreach ($allCombinations as $combination) {
+                $totalSize = array_sum(array_column($combination, 'size'));
+                echo "Combination: [";
+                foreach ($combination as $item) {
+                    echo " " . $item['size'];
+                }
+                echo " ] - Total size: " . $totalSize . "\n";
+            }
+            echo "\n";
+        }
+    }
+    else{
+        return ['status' => false , 'message' => 'Requested type we are not supporting yet!'];
+    }
+}
+
+function fitsSequenceForPossibleScenarios($itemsToFit, $size)
+{
+    $possibleItems = [];
+    foreach ($itemsToFit as $item) {
+        if ($item['size'] <= $size) {
+            $possibleItems[] = $item;
+        }
+    }
+    return $possibleItems;
 }
 
 function fitsSequenceForBetterFit($itemsToFit)
@@ -54,7 +89,49 @@ function fitsSequenceForBetterFit($itemsToFit)
     return $itemsToFit;
 }
 
-$binData = [['binSize' => 10 ,'name' => 'A']];
-$itemsToFit = [['size'=>8], ['size' => 1.5], ['size' => 9], ['size' => 3], ['size'=> 1] ]; 
-binPackAlgo($binData,$itemsToFit);
+function getAllValidCombinations($items, $binSize)
+{
+    $combinations = [];
+    $numItems = count($items);
+
+    // DP array to store the valid combinations
+    $dp = array_fill(0, $binSize * 10 + 1, []);
+    $dp[0] = [[]];
+
+    foreach ($items as $item) {
+        $itemSize = intval($item['size'] * 10);
+        for ($i = $binSize * 10; $i >= $itemSize; $i--) {
+            if (!empty($dp[$i - $itemSize])) {
+                foreach ($dp[$i - $itemSize] as $combination) {
+                    $newCombination = array_merge($combination, [$item]);
+                    $dp[$i][] = $newCombination;
+                }
+            }
+        }
+    }
+
+    // Collect all unique combinations
+    foreach ($dp as $validCombinations) {
+        foreach ($validCombinations as $combination) {
+            $combinations[] = $combination;
+        }
+    }
+
+    return $combinations;
+}
+$binData = [
+    ['binSize' => 10, 'name' => 'A'],
+    // ['binSize' => 15, 'name' => 'B'],
+    // ['binSize' => 20, 'name' => 'C'],
+    // ['binSize' => 25, 'name' => 'D'],
+];
+
+$itemsToFit = [
+    ['size' => 1], ['size' => 0.5], ['size' => 9], ['size' => 3], ['size' => 0.5], ['size' => 0.2], ['size' => 0.1],
+    // ['size' => 5], ['size' => 4], ['size' => 6], ['size' => 2], ['size' => 7], ['size' => 8], ['size' => 1.5], 
+    // ['size' => 3.5], ['size' => 0.8], ['size' => 2.5], ['size' => 1.2], ['size' => 1.8], ['size' => 4.5],
+    // ['size' => 5.5], ['size' => 6.5], ['size' => 7.5], ['size' => 8.5], ['size' => 9.5], ['size' => 0.7],
+];
+
+binPackAlgo($binData,$itemsToFit,'clear_house');
 ?>
